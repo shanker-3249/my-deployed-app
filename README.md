@@ -240,9 +240,9 @@ Terraform will create:
 
 **At the end you'll see output like:**
 ```
-app_url     = "http://3.91.XXX.XXX"
-public_ip   = "3.91.XXX.XXX"
-ssh_command = "ssh -i ~/.ssh/my-key-pair.pem ec2-user@3.91.XXX.XXX"
+app_url     = "http://X.XX.XXX.XXX"
+public_ip   = "XX.XX.XXX.XXX"
+ssh_command = "ssh -i ~/.ssh/my-key-pair.pem ec2-user@X.XX.XXX.XXX"
 ```
 
 **Save the `public_ip`!** You need it for the GitHub secret `EC2_HOST`.
@@ -371,12 +371,3 @@ sudo systemctl status nginx
 **Port 3000 not accessible:**
 - Check Security Group in AWS Console → ensure inbound rule for port 3000 exists
 
----
-
-## 📚 Next Steps (When Ready)
-
-- Add HTTPS with AWS Certificate Manager + ALB
-- Add a domain name with Route 53
-- Use AWS RDS for a database
-- Add CloudWatch alarms for monitoring
-- Use Terraform remote state (S3 backend) for team collaboration
