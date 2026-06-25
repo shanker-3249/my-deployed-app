@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="'Segoe UI', Arial, sans-serif">
+  <!-- Background -->
+  <rect width="900" height="560" fill="#0f172a" rx="16"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" fill="#f1f5f9" font-size="18" font-weight="700">AWS EC2 Deployment Architecture</text>
+
+  <!-- ── GitHub box ── -->
+  <rect x="30" y="70" width="160" height="100" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="110" y="102" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">DEVELOPER</text>
+  <!-- GitHub icon placeholder -->
+  <circle cx="110" cy="130" r="22" fill="#24292e" stroke="#6e7681" stroke-width="1.5"/>
+  <text x="110" y="135" text-anchor="middle" fill="white" font-size="18">⑂</text>
+  <text x="110" y="162" text-anchor="middle" fill="#cbd5e1" font-size="12" font-weight="600">GitHub Repo</text>
+
+  <!-- Arrow: GitHub → Actions -->
+  <line x1="192" y1="120" x2="258" y2="120" stroke="#475569" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="258,115 270,120 258,125" fill="#475569"/>
+  <text x="231" y="113" text-anchor="middle" fill="#64748b" font-size="10">git push</text>
+
+  <!-- ── GitHub Actions box ── -->
+  <rect x="272" y="70" width="160" height="100" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="352" y="102" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">CI/CD</text>
+  <rect x="322" y="110" width="60" height="32" rx="6" fill="#238636"/>
+  <text x="352" y="130" text-anchor="middle" fill="white" font-size="20">⚡</text>
+  <text x="352" y="162" text-anchor="middle" fill="#cbd5e1" font-size="12" font-weight="600">GitHub Actions</text>
+
+  <!-- Arrow: Actions → EC2 -->
+  <line x1="434" y1="120" x2="500" y2="120" stroke="#475569" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="500,115 512,120 500,125" fill="#475569"/>
+  <text x="473" y="113" text-anchor="middle" fill="#64748b" font-size="10">SSH deploy</text>
+
+  <!-- ── AWS Cloud boundary ── -->
+  <rect x="514" y="55" width="360" height="430" rx="14" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="530" y="78" fill="#f59e0b" font-size="11" font-weight="700">☁  AWS Cloud  (us-east-1)</text>
+
+  <!-- IAM Role box -->
+  <rect x="534" y="90" width="140" height="72" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="604" y="112" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">IAM</text>
+  <text x="604" y="134" text-anchor="middle" fill="#fbbf24" font-size="22">🔐</text>
+  <text x="604" y="154" text-anchor="middle" fill="#cbd5e1" font-size="11">EC2 Role + Policies</text>
+
+  <!-- Security Group box -->
+  <rect x="694" y="90" width="160" height="72" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="774" y="112" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">SECURITY GROUP</text>
+  <text x="774" y="134" text-anchor="middle" fill="#60a5fa" font-size="20">🛡</text>
+  <text x="774" y="154" text-anchor="middle" fill="#cbd5e1" font-size="11">Port 80 / 22 / 3000</text>
+
+  <!-- EC2 Instance box -->
+  <rect x="534" y="185" width="320" height="260" rx="12" fill="#172033" stroke="#2563eb" stroke-width="2"/>
+  <text x="694" y="210" text-anchor="middle" fill="#93c5fd" font-size="13" font-weight="700">EC2 Instance  (t3.small)</text>
+
+  <!-- Nginx layer -->
+  <rect x="554" y="222" width="280" height="52" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="694" y="243" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="600">NGINX  (Port 80)</text>
+  <text x="694" y="263" text-anchor="middle" fill="#64748b" font-size="10">Reverse proxy → localhost:3000</text>
+
+  <!-- Arrow down inside EC2 -->
+  <line x1="694" y1="276" x2="694" y2="292" stroke="#3b82f6" stroke-width="2"/>
+  <polygon points="689,292 694,302 699,292" fill="#3b82f6"/>
+
+  <!-- Node.js layer -->
+  <rect x="554" y="304" width="280" height="52" rx="8" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1"/>
+  <text x="694" y="325" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">Node.js App  (Port 3000)</text>
+  <text x="694" y="345" text-anchor="middle" fill="#64748b" font-size="10">Managed by PM2</text>
+
+  <!-- PM2 / EIP labels -->
+  <rect x="554" y="380" width="130" height="48" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="619" y="400" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="600">PM2</text>
+  <text x="619" y="418" text-anchor="middle" fill="#64748b" font-size="10">Process manager</text>
+
+  <rect x="704" y="380" width="130" height="48" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+  <text x="769" y="400" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="600">Elastic IP</text>
+  <text x="769" y="418" text-anchor="middle" fill="#64748b" font-size="10">Static public IP</text>
+
+  <!-- User arrow from bottom left -->
+  <text x="60" y="430" fill="#94a3b8" font-size="26">👤</text>
+  <text x="75" y="465" text-anchor="middle" fill="#94a3b8" font-size="11">User</text>
+  <line x1="90" y1="440" x2="530" y2="390" stroke="#10b981" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="524,383 534,390 522,396" fill="#10b981"/>
+  <text x="310" y="395" fill="#10b981" font-size="11" font-weight="600">HTTP :80</text>
+
+  <!-- IAM → EC2 arrow -->
+  <line x1="604" y1="162" x2="630" y2="185" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- SG → EC2 arrow -->
+  <line x1="774" y1="162" x2="760" y2="185" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- Legend -->
+  <rect x="30" y="460" width="450" height="80" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="255" y="482" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="700">LEGEND</text>
+  <line x1="50" y1="497" x2="80" y2="497" stroke="#10b981" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="85" y="501" fill="#cbd5e1" font-size="10">User HTTP Traffic</text>
+  <line x1="50" y1="517" x2="80" y2="517" stroke="#475569" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="85" y="521" fill="#cbd5e1" font-size="10">CI/CD Deploy Flow</text>
+  <line x1="190" y1="497" x2="220" y2="497" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="225" y="501" fill="#cbd5e1" font-size="10">IAM Attachment</text>
+  <line x1="190" y1="517" x2="220" y2="517" stroke="#3b82f6" stroke-width="2"/>
+  <text x="225" y="521" fill="#cbd5e1" font-size="10">Internal routing</text>
+</svg>

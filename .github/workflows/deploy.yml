@@ -1,0 +1,71 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:   # allows manual trigger from GitHub UI
+
+jobs:
+  # ── Job 1: Test ───────────────────────────────────────────────────
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: ./app
+        run: npm install
+
+      - name: Run tests
+        working-directory: ./app
+        run: npm test
+
+  # ── Job 2: Deploy ─────────────────────────────────────────────────
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: test          # only runs if test job passes
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}          # your Elastic IP
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}        # contents of your .pem file
+          port: 22
+          script: |
+            # Pull latest code
+            cd /home/ec2-user/app
+            git pull origin main
+
+            # Install any new dependencies
+            cd app
+            npm install --production
+
+            # Restart app with PM2 (zero-downtime reload)
+            pm2 reload my-app --update-env
+
+            echo "✅ Deployment complete at $(date)"
+
+      - name: Health Check
+        run: |
+          sleep 10
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.EC2_HOST }}/health)
+          if [ "$STATUS" = "200" ]; then
+            echo "✅ Health check passed (HTTP $STATUS)"
+          else
+            echo "❌ Health check failed (HTTP $STATUS)"
+            exit 1
+          fi
